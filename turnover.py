@@ -28,7 +28,7 @@ Atot = 1e-1
 
 
 ## ODE Numerical evaluator 
-def dx_dt(x):
+def dx_dt(x,t):
     return [-kd*x[0] + ki*(mtot-x[1])*(Atot-x[0]), kd*x[0]]
 
 IVs = [0,0]
