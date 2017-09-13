@@ -4,10 +4,10 @@ from scipy.integrate import odeint
 import pandas as pd 
 from pandas import Series,DataFrame 
 
-time = np.arange(0,100,1)
-ntime = len(time)
-fluo = 10*time - np.random.exponential(5,ntime)
-plt.plot(fluo)
+time = np.arange(0,100,0.5)
+#ntime = len(time)
+#fluo = 10*time - np.random.exponential(5,ntime)
+#plt.plot(fluo)
 
 ## Import & process fluorescence data 
 
@@ -38,7 +38,7 @@ M = X[:,1]
 
 
 ## Plot all data i.e. experimental, optimised and ODE evaluation 
-#plt.plot(time,X[])
-#plt.xlabel("Time")
-#plt.ylabel("Fluo")
-#plt.title("Turn Over model");
+plt.plot(time,M)
+plt.xlabel("Time")
+plt.ylabel("Aggregate conc.")
+plt.title("Turn Over model");
