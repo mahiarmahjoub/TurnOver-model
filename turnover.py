@@ -6,16 +6,23 @@ from scipy import optimize
 from scipy.special import lambertw
 
 
-## Import & process fluorescence data 
+## user parameters; currently hardcoded, some might be replaced by argparse later
 filename = '160816_M24_pH8_80ugmL.csv'
+baseline_N_points_to_average = 2
+plateau_N_points_to_average = 2
+
+
+## Import & process fluorescence data 
+
 fluo_data = pd.read_csv(filename)   # import 
 [xname,yname] = fluo_data.columns   # extract column names 
 expfluo = fluo_data[yname][:]       # create vector containing fluo values
-maxindex = np.argmax(expfluo)       # index of max fluorescence value 
-expfluo_norm = expfluo[:maxindex] - expfluo[0]  # normalise
-expfluo_normrel = expfluo_norm/np.amax(expfluo_norm)    # relative data
-time = fluo_data[xname][:maxindex]  # extract time vector 
-
+#maxindex = np.argmax(expfluo)       # index of max fluorescence value 
+baseline_average = np.mean(expfluo[0:baseline_N_points_to_average]) 
+plateau_average = np.mean(expfluo[plateau_N_points_to_average:-1]) 
+expfluo_norm = expfluo - baseline_average  # normalise
+expfluo_normrel = expfluo_norm/(plateau_average - baseline_average)  # relative data
+time = fluo_data[xname]  # extract time vector 
 
 ## Parameters 
 #kd = 10
