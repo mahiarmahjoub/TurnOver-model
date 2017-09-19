@@ -4,12 +4,23 @@ from scipy.integrate import odeint
 import pandas as pd 
 from scipy import optimize
 from scipy.special import lambertw
+import argparse
+
 
 
 ## user parameters; currently hardcoded, some might be replaced by argparse later
-filename = '160816_M24_pH8_80ugmL.csv'
-baseline_N_points_to_average = 2
-plateau_N_points_to_average = 2
+parser = argparse.ArgumentParser()
+parser.add_argument("filename", help="insert the name of file")
+parser.add_argument("baseline", type=int,
+                    help="# points to calculate baseline fluorescence")
+parser.add_argument("endpoint", 
+                    help="# points at the end to derive relative fluorescence",
+                    type=int)
+args = parser.parse_args()
+
+filename = args.filename
+baseline_N_points_to_average = args.baseline
+plateau_N_points_to_average = args.endpoint
 
 
 ## Import & process fluorescence data 
