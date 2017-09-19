@@ -65,22 +65,21 @@ def Mss_sol(p,t,mTot,ATot,Mini):
     out3 = (b*ATot*a*t)/(a + c)
     out4 = np.exp(out2 - out3)
     out5 = np.real(lambertw(out2*out4))
-    
-    out = mTot - out5*out1
+    out = 1 - out5*out1/mTot
     return out
     
 ## Optimise fluorescence data to the steady state solution 
-errfunc = lambda p,t,y,mTot,ATot,Mini: Mss_sol(p,t,mTot,ATot,Mini) - y # Distance to the target function
+def errfunc(p,t,y,mTot,ATot,Mini): 
+    out = np.sum((Mss_sol(p,t,mTot,ATot,Mini) - y)**2)
+    return out
 
 
 p0 = [kd_guess,ki_guess,kj_guess]     # Initial guess for the parameters
-fit_result = optimize.leastsq(errfunc,
-                        p0[:], 
-                         args=(time,expfluo_normrel,mtot,Atot,M_initial),
-                         full_output = True,
-                         ftol = 1e-12, maxfev = 1000) # fit 
+fit_result = optimize.basinhopping(errfunc,
+                        p0,disp = True,niter = 100,
+                        minimizer_kwargs = {'method':'Nelder-Mead', 'args':(time,expfluo_normrel,mtot,Atot,M_initial)}) # fit 
 
-pfitted = fit_result[0]
+pfitted = fit_result['x']
 [kd, ki, kj] = abs(pfitted)
 
 ## ODE Numerical evaluator 
@@ -97,7 +96,7 @@ Mnum_rel = Mnum/mtot
 ## Plot all data i.e. experimental, optimised and ODE evaluation 
 plt.plot(time,expfluo_normrel, label='Experimental')
 plt.plot(time,Mnum_rel,'r', label='Numerical')
-plt.plot(time, Mss_sol(abs(pfitted),time,mtot,Atot,M_initial)/mtot, 'b', label='Steady-state')
+plt.plot(time, Mss_sol(abs(pfitted),time,mtot,Atot,M_initial), 'b', label='Steady-state')
 #plt.plot(time, Mss_sol(p0,time,mtot,Atot,M_initial)/mtot, 'b', label='Steady-state')
 plt.xlabel("Time")
 plt.ylabel("Aggregate conc.")
