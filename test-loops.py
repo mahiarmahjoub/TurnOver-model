@@ -9,9 +9,9 @@ from pandas import DataFrame
 kd = 6e-6 # initial guess for the optimisation
 ki = 3  # initial guess for the optimisation
 kj = 3e-9 # initial guess for the optimisation
-max_mtot = 9.6e-6   # total concentration of monomers 
+max_mtot = 9.6e-6 # total concentration of monomers 
 m0 = np.array([max_mtot,max_mtot/2, max_mtot/4])
-Atot = 1e-1 # total area of available interface
+Atot = 1e- # total area of available interface
 Acov_initial = 0 
 M_initial = 0
 IVs = [Acov_initial, M_initial]

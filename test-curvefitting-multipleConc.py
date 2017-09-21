@@ -1,4 +1,11 @@
-# Purpose of this exercise was to solve an ODE across multiple concentrations 
+## Purpose of this exercise is to GLOBALLY FIT the data from various 
+# concentrations to the steady state model. 
+
+# Through this exercise, the program will now be able to:
+    # (1) import data containing time and fluorescence data from more than one set
+    # of concentration 
+    # (2) perform a GLOBAL FIT of all the concentrations to the steady state
+    # model 
 
 import numpy as np 
 import matplotlib.pyplot as plt
@@ -29,11 +36,13 @@ ki_guess = 3  # initial guess for the optimisation
 kj_guess = 3e-9 # initial guess for the optimisation
 max_mtot = 9.6e-6   # total concentration of monomers 
 m0 = np.array([max_mtot,max_mtot/2, max_mtot/4])
-Atot = 1e-1 # total area of available interface
+colour = ['b','g','r']
+Atot = 1e-7 # total area of available interface
 Acov_initial = 0 
 M_initial = 0
 IVs = [Acov_initial, M_initial]
 M = np.zeros((len(time),len(m0)))
+Mrel = M
 
 
 
@@ -77,12 +86,23 @@ def dx_dt(x,t,kd,ki,kj,mTot,ATot):
 for i in range(0,len(m0)):
     sol = odeint(dx_dt, IVs, time, args=(kd, ki, kj, m0[i], Atot))
     M[:,i] = sol[:,1]
+    Mrel[:,i] = sol[:,1]/max(sol[:,1])
 
+plt.figure(0)
 for i in range(0,len(m0)):
-    plt.subplot(1,2,1)
-    plt.plot(time,Mss_sol(pfitted,time,m0[i],Atot,M_initial),label=col_label[i])
-    plt.plot(time,expfluo_normrel[:,i],'o')
-    plt.legend()
-    plt.subplot(1,2,2)
-    plt.plot(time,M[:,i],label=col_label[i])
-    plt.legend()
+    plt.plot(time,Mss_sol(pfitted,time,m0[i],Atot,M_initial),
+             label=col_label[i], color=colour[i], linewidth=3)
+    plt.plot(time,expfluo_normrel[:,i],'o',color=colour[i],alpha=0.3)
+    plt.title('Fitted Steady-State solution')
+    plt.xlabel('Time (min)')
+    plt.ylabel('Relative aggregate conc')
+    plt.legend(loc='lower right')
+
+plt.figure(1)
+for i in range(0,len(m0)):
+    plt.plot(time,Mrel[:,i],label=col_label[i], color=colour[i], linewidth=3)
+    plt.plot(time,Mss_sol(pfitted,time,m0[i],Atot,M_initial),
+             'o', color=colour[i], alpha=0.3)
+    plt.title('Check steady-state solution vs numerical')
+    plt.xlabel('Time (min)')
+    plt.legend(loc='lower right')
