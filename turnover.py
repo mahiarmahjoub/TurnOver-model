@@ -30,16 +30,6 @@ filename = args.filename
 baseline_N_points_to_average = args.baseline
 plateau_N_points_to_average = args.endpoint
 
-<<<<<<< HEAD
-## Import & process fluorescence data 
-fluo_data = pd.read_csv(filename)   # import 
-[xname,yname] = fluo_data.columns   # extract column names 
-expfluo = fluo_data[yname][:]       # create vector containing fluo values
-maxindex = np.argmax(expfluo)       # index of max fluorescence value 
-expfluo_norm = expfluo[:maxindex] - expfluo[0]  # normalise
-expfluo_normrel = expfluo_norm/np.amax(expfluo_norm)    # relative data
-time = fluo_data[xname][:maxindex]  # extract time vector 
-=======
 ## -- Import & process fluorescence data -------------------------------------
 expfluo = pd.read_csv(filename,index_col=0)    # import 
 time = np.array(expfluo.index)  # extract time vector 
@@ -51,7 +41,6 @@ plateau_average = np.mean(expfluo[maxt-plateau_N_points_to_average:maxt])
 expfluo_norm = expfluo - baseline_average  # normalise
 expfluo_normrel = expfluo_norm/(plateau_average - baseline_average)  # relative data
 expfluo_normrel = pd.DataFrame.as_matrix(expfluo_normrel)   # change from pandas to numpy array 
->>>>>>> develop
 
 ## -- Set parameters, initial values and vectors -----------------------------
 kd_guess = 6e-6 # initial guess for the optimisation
