@@ -14,6 +14,7 @@ import pandas as pd
 from scipy import optimize
 from scipy.special import lambertw
 import argparse
+from pandas import DataFrame
 
 ## User parameters
 parser = argparse.ArgumentParser()
@@ -45,12 +46,14 @@ expfluo_norm = expfluo - baseline_average  # normalise
 expfluo_normrel = expfluo_norm/(plateau_average - baseline_average)  # relative data
 time = fluo_data[xname]  # extract time vector 
 
+
 ## Parameters 
-kd_guess = 10 # initial guess for the optimisation
-ki_guess = 1  # initial guess for the optimisation
-kj_guess = 0.1 # initial guess for the optimisation
-mtot = 9.6e-6   # total concentration of monomers 
-Atot = 1e-1 # total area of available interface
+kd_guess = 6e-6 # initial guess for the optimisation
+ki_guess = 3  # initial guess for the optimisation
+kj_guess = 1e-9 # initial guess for the optimisation
+mtot_max = 9.6e-6 
+mtot = np.array([mtot_max,  mtot_max/2, mtot_max/4])  # total concentration of monomers 
+Atot = 1e-7 # total area of available interface
 Acov_initial = 0 
 M_initial = 0
 
@@ -102,3 +105,4 @@ plt.xlabel("Time")
 plt.ylabel("Aggregate conc.")
 plt.title("Turn Over model")
 plt.legend()
+
