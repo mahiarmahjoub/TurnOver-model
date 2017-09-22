@@ -7,7 +7,6 @@ from scipy.special import lambertw
 
 
 ## Import & process fluorescence data 
-filename = '160816_M24_pH8_80ugmL.csv'
 fluo_data = pd.read_csv(filename)   # import 
 [xname,yname] = fluo_data.columns   # extract column names 
 expfluo = fluo_data[yname][:]       # create vector containing fluo values
