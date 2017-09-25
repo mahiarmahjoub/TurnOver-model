@@ -29,6 +29,9 @@ args = parser.parse_args()
 filename = args.filename
 baseline_N_points_to_average = args.baseline
 plateau_N_points_to_average = args.endpoint
+#filename = '170410_M24_38s-shaking_22s-wait_pH5.csv'
+#baseline_N_points_to_average = 1
+#plateau_N_points_to_average = 5
 
 ## -- Import & process fluorescence data -------------------------------------
 expfluo = pd.read_csv(filename,index_col=0)    # import 
@@ -43,12 +46,11 @@ expfluo_normrel = expfluo_norm/(plateau_average - baseline_average)  # relative 
 expfluo_normrel = pd.DataFrame.as_matrix(expfluo_normrel)   # change from pandas to numpy array 
 
 ## -- Set parameters, initial values and vectors -----------------------------
-kd_guess = 6e-6 # initial guess for the optimisation
-ki_guess = 3  # initial guess for the optimisation
-kj_guess = 3e-9 # initial guess for the optimisation
+kd_guess = 6e0 # initial guess for the optimisation
+ki_guess = 3e6  # initial guess for the optimisation
+kj_guess = 0 # initial guess for the optimisation
 max_mtot = 9.6e-6   # total concentration of monomers 
 colour = ['b','g','r','c','m']   # select colours for the plot 
-exp_details = 'EASd15 pH 8.0'  # insert protein name + other conditions 
 m0 = np.zeros(nconc)  
 for i in range(0,nconc):   # generate an array containing all monomer conc
     if i == 0:
@@ -124,7 +126,7 @@ for i in range(0,nconc):
               rowLabels=['kd','ki','kj'],
               colLabels=['Fit','abs(Fit)'],
               loc='lower right')
-    plt.text(31,0.25,exp_details)
+    plt.text(maxt-10,0.3,filename.replace('.csv',' '))
     plt.savefig(filename.replace('.csv','_fit.png'),dpi=300)
 plt.figure(1)
 for i in range(0,len(m0)):
