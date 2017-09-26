@@ -48,7 +48,6 @@ ki_guess = 3  # initial guess for the optimisation
 kj_guess = 3e-9 # initial guess for the optimisation
 max_mtot = 9.6e-6   # total concentration of monomers 
 colour = ['b','g','r','c','m']   # select colours for the plot 
-exp_details = 'EASd15 pH 8.0'  # insert protein name + other conditions 
 m0 = np.zeros(nconc)  
 for i in range(0,nconc):   # generate an array containing all monomer conc
     if i == 0:
@@ -124,10 +123,10 @@ for i in range(0,nconc):
               rowLabels=['kd','ki','kj'],
               colLabels=['Fit','abs(Fit)'],
               loc='lower right')
-    plt.text(31,0.25,exp_details)
+    plt.text(maxt-10,0.3,filename.replace('.csv',' '))
     plt.savefig(filename.replace('.csv','_fit.png'),dpi=300)
 plt.figure(1)
-for i in range(0,len(m0)):
+for i in range(0,nconc):
     plt.plot(time,Mrel[:,i],label=col_label[i], color=colour[i], linewidth=3)
     plt.plot(time,Mss_sol(pfitted,time,m0[i],Atot,M_initial),
              'o', color=colour[i], alpha=0.3)
