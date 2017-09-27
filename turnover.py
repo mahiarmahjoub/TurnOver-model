@@ -29,9 +29,9 @@ args = parser.parse_args()
 filename = args.filename
 baseline_N_points_to_average = args.baseline
 plateau_N_points_to_average = args.endpoint
-#filename = '170410_M24_38s-shaking_22s-wait_pH5.csv'
-#baseline_N_points_to_average = 1
-#plateau_N_points_to_average = 5
+#filename = '160706_EAS_pH8_10-20ugmL.csv'
+#baseline_N_points_to_average = 0
+#plateau_N_points_to_average = 3
 
 ## -- Import & process fluorescence data -------------------------------------
 expfluo = pd.read_csv(filename,index_col=0)    # import 
@@ -129,7 +129,7 @@ for i in range(0,nconc):
     plt.text(maxt-10,0.3,filename.replace('.csv',' '))
     plt.savefig(filename.replace('.csv','_fit.png'),dpi=300)
 plt.figure(1)
-for i in range(0,len(m0)):
+for i in range(0,nconc):
     plt.plot(time,Mrel[:,i],label=col_label[i], color=colour[i], linewidth=3)
     plt.plot(time,Mss_sol(pfitted,time,m0[i],Atot,M_initial),
              'o', color=colour[i], alpha=0.3)
