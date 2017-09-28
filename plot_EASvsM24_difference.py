@@ -44,10 +44,5 @@ for i in range(0,nconc):
         plt.xlabel('Time (min)')
     plt.ylabel('Relative aggregate conc')
     plt.legend(loc='center right')
-    plt.table(cellText=np.round(np.transpose([pfitted]),1),
-              colWidths = [0.2]*2,
-              rowLabels=['kd','ki','kj'],
-              colLabels=['Fit','abs(Fit)'],
-              loc='lower right')
-    plt.text(maxt-10,0.3,filename.replace('.csv',' '))
-    plt.savefig(filename.replace('.csv','_fit.png'),dpi=300)
+    #plt.text(maxt-10,0.3,filename[0].replace('.csv',' '))
+    #plt.savefig(filename.replace('.csv','_fit.png'),dpi=300)

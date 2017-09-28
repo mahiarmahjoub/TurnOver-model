@@ -57,7 +57,7 @@ for i in range(0,nconc):   # generate an array containing all monomer conc
         m0[0] = max_mtot 
     else:
         m0[i] = m0[i-1]/2
-Atot = 1e-7   # total area of available interface
+Atot = 1e-7     # total area of available interface
 Acov_initial = 0 
 M_initial = 0
 IVs = [Acov_initial, M_initial]
